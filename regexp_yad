@@ -1,0 +1,20 @@
+function parseYaPay($response)
+{
+    preg_match('/\d{11,20}/', $response, $purse);
+
+    $result['purse'] = $purse[0];
+
+    $response = preg_replace('/' . $purse[0] . '/', '', $response);
+
+    preg_match('/(?<![0-9,.])\d{4}(?![0-9,.A-zА-я]{2,})/', $response, $code);
+
+    $result['code'] = $code[0];
+
+    $response = preg_replace('/' . $code[0] . '/', '', $response);
+
+    preg_match('/(\d+)([.,]?)(\d+)/', $response, $sum);
+
+    $result['sum'] = $sum[0];
+
+    return $result;
+}
